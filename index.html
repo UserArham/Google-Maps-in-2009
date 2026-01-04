@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Maps Example</title>
+  <style>
+    /* Full-page map */
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Google Maps JavaScript API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+  <script>
+    function initMap() {
+      // Map options
+      const mapOptions = {
+        center: { lat: 37.4419, lng: -122.1419 }, // Example: Palo Alto, CA
+        zoom: 13,
+        mapTypeId: 'roadmap' // classic map type
+      };
+
+      // Create the map
+      const map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+      // Add a marker
+      const marker = new google.maps.Marker({
+        position: { lat: 37.4419, lng: -122.1419 },
+        map: map,
+        title: "Hello from 2026!"
+      });
+
+      // Add an info window
+      const infoWindow = new google.maps.InfoWindow({
+        content: "<b>Hello!</b><br>This is a Google Map example."
+      });
+
+      // Open info window on marker click
+      marker.addListener("click", () => {
+        infoWindow.open(map, marker);
+      });
+    }
+
+    // Initialize map when page loads
+    window.onload = initMap;
+  </script>
+</body>
+</html>
