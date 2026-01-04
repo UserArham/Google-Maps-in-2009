@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Maps 2009 Style Demo</title>
+  <style>
+    /* Full page map */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- Google Maps JavaScript API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+  <script>
+    function initMap() {
+      // Map options
+      const mapOptions = {
+        center: { lat: 37.4419, lng: -122.1419 }, // Palo Alto
+        zoom: 13,
+        mapTypeId: 'roadmap', // classic map
+        streetViewControl: true,
+        mapTypeControl: true
+      };
+
+      // Create the map
+      const map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+      // -------------------------
+      // Markers
+      // -------------------------
+      const locations = [
+        { lat: 37.4419, lng: -122.1419, title: "Marker 1", info: "This is Palo Alto" },
+        { lat: 37.4519, lng: -122.1619, title: "Marker 2", info: "Marker 2 Info" },
+        { lat: 37.4319, lng: -122.1219, title: "Marker 3", info: "Marker 3 Info" }
+      ];
+
+      locations.forEach(loc => {
+        const marker = new google.maps.Marker({
+          position: { lat: loc.lat, lng: loc.lng },
+          map: map,
+          title: loc.title
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<b>${loc.title}</b><br>${loc.info}`
+        });
+
+        marker.addListener("click", () => infoWindow.open(map, marker));
+      });
+
+      // -------------------------
+      // Polyline (Route)
+      // -------------------------
+      const routePath = new google.maps.Polyline({
+        path: [
+          { lat: 37.4419, lng: -122.1419 },
+          { lat: 37.4519, lng: -122.1619 },
+          { lat: 37.4319, lng: -122.1219 }
+        ],
+        geodesic: true,
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 4
+      });
+
+      routePath.setMap(map);
+
+      // -------------------------
+      // Layers (Traffic, Transit)
+      // -------------------------
+      const trafficLayer = new google.maps.TrafficLayer();
+      trafficLayer.setMap(map);
+
+      const transitLayer = new google.maps.TransitLayer();
+      transitLayer.setMap(map);
+
+      // -------------------------
+      // Custom Controls (Zoom, MapType)
+      // -------------------------
+      map.setOptions({
+        zoomControl: true,
+        mapTypeControl: true,
+        scaleControl: true,
+        streetViewControl: true,
+        rotateControl: true
+      });
+    }
+
+    // Initialize map on page load
+    window.onload = initMap;
+  </script>
+</body>
+</html>
